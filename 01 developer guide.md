@@ -4,8 +4,8 @@ apachelogreader developer guide
 brief description
 -----------------
 apachelogreader is a series of scripts written in Python3 that does the following:
-1. reads apache logs
-2. looks for signs of SQL injections, file inclusion attempts, web-shell attacks
+1. reads apache logs.
+2. looks for signs of SQL injections, file inclusion attempts, web-shell attacks.
 3. outputs the results in several text files plus one csv file.
 
 there are 3 scripts in apachelogreader:
@@ -23,9 +23,9 @@ how to install
 how to use
 ----------
 1. run main.py
-2. look at the outputs (gathered in folder called /01 results in the same directory)
-3. maybe tweak analyze_query.py to reduce false positives/reduce noise
-4. run main.py again (time will be roughly halved as main.py will read from 000 dump.txt which contains processed data)
+2. look at the outputs. (gathered in folder called /01 results in the same directory)
+3. maybe tweak analyze_query.py to reduce false positives/noise.
+4. run main.py again. (time will be roughly halved as main.py will read from 000 dump.txt which contains processed data)
 
 how it works: main.py
 --------------------------------------
@@ -39,21 +39,20 @@ main.py has 5 functions:
     - order of growth: time: O(1) space: O(1)
 
 2. map(op,seq)
-    - takes in a sequence (seq) and applies an operation (op) on every element in the sequence
-    - recursive function
+    - recursively takes in a sequence (seq) and applies an operation (op) on every element in the sequence.
     - order of growth: time: O(n) space: O(n)
 
 3. extract_data(pattern,filename)
-    - uses (filename) to reach the apache log and analyzes each entry using a regex mask (pattern)
-    - iterates through apache log and creates a 2-element tuple of a set of unique ip addresses and a dictionary of web activities (client_ip_record)
-    - ignores entries that contain strings indicating queries for css, images, tooltips, popups, javascript
+    - uses (filename) to reach the apache log and analyzes each entry using a regex mask (pattern).
+    - iterates through apache log and creates a 2-element tuple of a set of unique ip addresses and a dictionary of web activities (client_ip_record).
+    - ignores entries that contain strings indicating queries for css, images, tooltips, popups, javascript.
     - order of growth: time: O(n) space: O(1)
-    - do note that although time complexity is linear, this function requires a longer runtime than dump_reader.py due to the number of operations required (e.g. datetime operations, string manipulations, sequence organization, etc)
+    - do note that although time complexity is linear, this function requires a longer runtime than dump_reader.py due to the number of operations required (e.g. datetime operations, string manipulations, sequence organization, etc).
   
 4. organize_record(timestamp,activity,client_ip,client_port,client_agent,client_success,client_ip_record)
-    - does the appending of activities matched to each unique client ip address to create a complete dictionary
+    - appends web activities matched to each unique client ip address to create a complete dictionary.
     - creates a tuple (activity,timestamp,client_port,client_agent,client_success), looks through a dictionary (client_ip_record) for the right key (client_ip), and appends the tuple to the key element.
-    - tuple elements:
+    - each tuple contains:
         - [0] web activity
         - [1] timestamp
         - [2] port
@@ -62,16 +61,16 @@ main.py has 5 functions:
     - order of growth: time: O(1) space: O(1)
   
 5. print_results(unique_client_ip_set,client_ip_record)
-    - creates output folder /01 results in the same directory
+    - creates output folder /01 results in the same directory.
     - creates the following output files while evaluating web activities by calling in analyze_query.py:
-      - 0/6 000 dump.txt by dumping the set of unique ip addresses (unique_client_ip_set) and dict of web activities per unique client (client_ip_record) into a text file.
-      - 1/6 001 ip_address_list.txt by dumping the set of unique ip addresses only
-      - 2/6 002 ip_address_activities.txt by dumping the dict of web activities per unique client
-      - 3/6 003 sql_injections.txt by assessing each element for each key in the dict (client_ip_record), parsing the element through detect_sqli() from analyze_query.py, writes the web activity to the text file if detect_sqli() returns True.
-      - 4/6 004 file_inclusions.txt by assessing each element for each key in the dict (client_ip_record), parsing the element through detect_fi() from analyze_query.py, writes the web activity to the text file if detect_fi() returns True.
-      - 5/6 005 web_shells.txt by assessing each element for each key in the dict (client_ip_record), parsing the element through detect_web_shell() from analyze_query.py, writes the web activity to the text file if detect_web_shell() returns True.
-      - 6/6 006 combined_sqli_rfi_shells.txt calls all 3 detection modules from analyze_query.py and writes all web activities that trigger detection criteria to the text file.
-      - late addition: runs dump_reader.dump_csv() that will create a csv version of 000 dump.txt.
+      1. 000 dump.txt by dumping the set of unique ip addresses (unique_client_ip_set) and dict of web activities per unique client (client_ip_record) into a text file.
+      2. 001 ip_address_list.txt by dumping the set of unique ip addresses only
+      3. 002 ip_address_activities.txt by dumping the dict of web activities per unique client
+      4. 003 sql_injections.txt by assessing each element for each key in the dict (client_ip_record), parsing the element through detect_sqli() from analyze_query.py, writes the web activity to the text file if detect_sqli() returns True.
+      5. 004 file_inclusions.txt by assessing each element for each key in the dict (client_ip_record), parsing the element through detect_fi() from analyze_query.py, writes the web activity to the text file if detect_fi() returns True.
+      6. 005 web_shells.txt by assessing each element for each key in the dict (client_ip_record), parsing the element through detect_web_shell() from analyze_query.py, writes the web activity to the text file if detect_web_shell() returns True.
+      7. 006 combined_sqli_rfi_shells.txt calls all 3 detection modules from analyze_query.py and writes all web activities that trigger detection criteria to the text file.
+      8. late addition: runs dump_reader.dump_csv() that will create a csv version of 000 dump.txt.
     - order of growth: time: O(4n^2) space: O(n^2)
 
 how it works: analyze_query.py
@@ -79,11 +78,11 @@ how it works: analyze_query.py
 analyze_query.py contains 3 functions that detect for SQL injections, file inclusion attacks, and web shell attempts.
 
 detect_sqli(query), detect_fi(query), detect_web_shell(query) -> (True if detected, False otherwise)
-    - runs a query/web activity through a series of regex masks and filters respective to SQLi, file inclusion, web shells.
-    - SQL injection regex masks adapted from https://forensics.cert.org/latk/loginspector.py
-    - file inclusion regex masks adapted from https://www.trustwave.com/Resources/SpiderLabs-Blog/ModSecurity-Advanced-Topic-of-the-Week--Remote-File-Inclusion-Attack-Detection/
-    - web shell regex masks adapted from https://github.com/emposha/PHP-Shell-Detector 
-    - filters customized through trial and error to reduce false positives/increase accuracy
+   - runs a query/web activity through a series of regex masks and filters respective to SQLi, file inclusion, web shells.
+   - SQL injection regex masks adapted from https://forensics.cert.org/latk/loginspector.py
+   - file inclusion regex masks adapted from https://www.trustwave.com/Resources/SpiderLabs-Blog/ModSecurity-Advanced-Topic-of-the-Week--Remote-File-Inclusion-Attack-Detection/
+   - web shell regex masks adapted from https://github.com/emposha/PHP-Shell-Detector 
+   - filters customized through trial and error to reduce false positives/increase accuracy
   
 to increase accuracy/sooth dissatisfaction of results, do adjust the regex masks or filters as you see fit.
 
