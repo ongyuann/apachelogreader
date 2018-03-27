@@ -3,7 +3,7 @@ apachelogreader user guide
 
 What is apachelogreader?
 ------------------------
-apachelogreader is a script written in Python3 for reading apache logs, looks for signs of SQL injections, file inclusion attempts, and web-shell attacks and outputs the results in several text files plus one csv file. 
+apachelogreader is a script written in Python3 for reading apache logs, looks for signs of SQL injections, file inclusion attempts, web-shell attacks and outputs the results in several text files plus one csv file. 
 
 Installing apachelogreader
 --------------------------
