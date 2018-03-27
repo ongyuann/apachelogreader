@@ -8,8 +8,7 @@ apachelogreader is a series of scripts written in Python3 that does the followin
 2. looks for signs of SQL injections, file inclusion attempts, web-shell attacks
 3. outputs the results in several text files plus one csv file.
 
-there are 3 scripts in apachelogreader.
-
+there are 3 scripts in apachelogreader:
 1. main.py scans apache logs and writes output files. (.log file) -> (6 text files, 1 csv file)
 2. analyze_query.py takes in a query and returns a Boolean to indicate if the query contains signs of SQL injections, file inclusion attempts or web-shell attacks. (http query) -> (Boolean)
 3. dump_reader.py only works after main.py has been run once. it looks for a dump file (000 dump.txt), reads it, and re-creates the data sequences that are used by main.py for analysis. (None) -> (2-element tuple of one set and one dictionary)
@@ -32,13 +31,7 @@ how it works: main.py
 --------------------------------------
 main.py is the main driver of apachelogreader that calls in analyze_query.py and read_dump.py to read and analyze apache logs.
 
-main.py has 5 functions.
-1. define_variables()
-2. map(op,seq)
-3. extract_data(pattern,filename)
-4. organize_record(timestamp,activity,client_ip,client_port,client_agent,client_success,client_ip_record)
-5. print_results(unique_client_ip_set,client_ip_record)
-
+main.py has 5 functions:
 1. define_variables()
   - creates a regular expression (regex) mask to read one line entry in an apache log. 
   - doubles as a starter interface with the user as it asks for the filename for the apache log.
@@ -84,10 +77,7 @@ main.py has 5 functions.
 
 how it works: analyze_query.py
 ------------------------------
-analyze_query.py contains 3 functions to detect for SQL injections, file inclusion attacks, and web shell attempts.
-1. detect_sqli(query)
-2. detect_fi(query)
-3. detect_web_shell(query)
+analyze_query.py contains 3 functions that detect for SQL injections, file inclusion attacks, and web shell attempts.
 
 detect_sqli(query), detect_fi(query), detect_web_shell(query) -> (True if detected, False otherwise)
   - runs a query/web activity through a series of regex masks and filters respective to SQLi, file inclusion, web shells.
@@ -103,7 +93,6 @@ how it works: dump_reader.py
 dump_reader looks for a dump file (000 dump.txt) and reads the file to re-create the dictionary (client_ip_record) used by main.py to write and evaluate the apache log of interest.
 
 there are 3 functions in dump_reader.py:
-
 1. try_dump()
   - returns True if it finds 000 dump.txt in a 01/results folder.
   - returns False otherwise
