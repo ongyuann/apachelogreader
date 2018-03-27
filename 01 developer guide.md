@@ -3,29 +3,34 @@ apachelogreader developer guide
 
 brief description
 -----------------
-apachelogreader is a series of scripts written in Python3 for reading apache logs, looks for signs of SQL injections, file inclusion attempts, web-shell attacks and outputs the results in several text files plus one csv file.
+apachelogreader is a series of scripts written in Python3 that does the following:
+1. reads apache logs
+2. looks for signs of SQL injections, file inclusion attempts, web-shell attacks
+3. outputs the results in several text files plus one csv file.
 
-- main.py scans apache logs and writes output files. (.log file) -> (6 text files, 1 csv file)
-- analyze_query.py takes in a query and returns a Boolean to indicate if the query contains signs of SQL injections, file inclusion attempts or web-shell attacks. (http query) -> (Boolean)
-- dump_reader.py only works after main.py has been run once. it looks for a dump file (000 dump.txt), reads it, and re-creates the data sequences that are used by main.py for analysis. (None) -> (2-element tuple of one set and one dictionary)
+there are 3 scripts in apachelogreader.
 
-the framework and key functions of apachelogreader is adapted and modified from https://github.com/ryanermita/apache-logs-analyzer
+1. main.py scans apache logs and writes output files. (.log file) -> (6 text files, 1 csv file)
+2. analyze_query.py takes in a query and returns a Boolean to indicate if the query contains signs of SQL injections, file inclusion attempts or web-shell attacks. (http query) -> (Boolean)
+3. dump_reader.py only works after main.py has been run once. it looks for a dump file (000 dump.txt), reads it, and re-creates the data sequences that are used by main.py for analysis. (None) -> (2-element tuple of one set and one dictionary)
+
+the framework and some key functions of apachelogreader is adapted and modified from https://github.com/ryanermita/apache-logs-analyzer
 
 how to install
 --------------
-download main.py, analyze_query.py, dump_reader.py and place them in the same directory as your apache log file.
-preferably, your apache log file has been unzipped and stands as a .log file.
+1. download main.py, analyze_query.py, dump_reader.py and place them in the same directory as your apache log file.
+2. preferably, your apache log file has been unzipped and stands as a .log file.
 
 how to use
 ----------
 1. run main.py
 2. look at the outputs (gathered in folder called /01 results in the same directory)
 3. maybe tweak analyze_query.py to reduce false positives/reduce noise
-4. run main.py again (time will be halved as main.py will read from 000 dump.txt which contains processed data)
+4. run main.py again (time will be roughly halved as main.py will read from 000 dump.txt which contains processed data)
 
 how it works: main.py
 --------------------------------------
-in this section I briefly describe what main.py actually does.
+main.py is the main driver of apachelogreader that calls in analyze_query.py and read_dump.py to read and analyze apache logs.
 
 main.py has 5 functions.
 1. define_variables()
