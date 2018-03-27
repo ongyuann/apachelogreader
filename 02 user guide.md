@@ -30,4 +30,4 @@ the csv file allows you to:
 
 all these information, and being able to filter them, ideally allows a web admin to build a profile of suspicious activity and the actors behind them. there's much you can tell by looking into the user-agent that was used by an ip address, the speed at which some requests are sent to the server, the type of requests sent, the persistent presence of an ip address. 
 
-the accuracy of the scans is dependent on the code written in analyze_query.py. to tweak them, please read the developer guide.
+the accuracy of the scans is dependent on the code written in analyze_query.py. to tweak the code, please read the developer guide.
