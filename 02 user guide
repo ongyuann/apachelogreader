@@ -1,0 +1,7 @@
+steps:
+1- download main.py, analyze_query.py, dump_reader.py
+2- place those scripts in the same directory as your apache log
+3- unzip your apache log
+4- run main.py
+
+more explanation:
