@@ -3,13 +3,7 @@ import datetime
 import analyze_query as aq
 import dump_reader
 
-###try creating result files
-##test = os.getcwd()
-###print (test)
-##if not os.path.isdir('result'):
-##    os.makedirs('result')
-
-def define_variables():
+def define_variables(): #create regex for reading apache log entries
     p = {
 		's' : r'\s',					# space
 		'0' : r'\d{4}-\d{2}-\d{2}',			# date
@@ -48,7 +42,7 @@ def map(op,seq): #emergency map func cos I'm unfamiliar with python's native map
     else:
         return [op(seq[0])] + map(op,seq[1:])
 
-def extract_data(pattern,filename):
+def extract_data(pattern,filename): #parse apache log and returns 2 things: set of unique ip addresses, dictionary of tuples of activities
     print('extracting data from '+ filename + ' ...')
     file = open(os.getcwd()+'/'+filename,'r',encoding='latin-1')
     client_ip_record = {}
@@ -75,13 +69,13 @@ def extract_data(pattern,filename):
             client_success = result.groups(0)[9] #status code
             
             unique_client_ip_set.add(client_ip)
-            organize_record(result,timestamp,activity,client_ip,client_port,client_agent,client_success,client_ip_record)
+            organize_record(timestamp,activity,client_ip,client_port,client_agent,client_success,client_ip_record)
 
         curr_line = file.readline()
     print('done')
     print_results(unique_client_ip_set,client_ip_record)
     
-def organize_record(result,timestamp,activity,client_ip,client_port,client_agent,client_success,client_ip_record):
+def organize_record(timestamp,activity,client_ip,client_port,client_agent,client_success,client_ip_record):
     if client_ip not in client_ip_record.keys():
             client_ip_record[client_ip] = [1,(activity,timestamp,client_port,client_agent,client_success)]
     else:
@@ -106,8 +100,7 @@ def print_results(unique_client_ip_set,client_ip_record):
 #000 dump ##may or may not be useful for re-analysis
     '''
     - subsequent scans can be done after tweaking the analyze_query module.
-    - reading from 000 dump.txt about halves the time from extracting data
-      from CTF1.log
+    - reading from 000 dump.txt about halves the time from extracting data from an apache log
     '''
     filename = '000 dump.txt'
     print('0/6 writing 000 dump.txt ...')
@@ -115,7 +108,7 @@ def print_results(unique_client_ip_set,client_ip_record):
         file = open('01 results/'+filename,'r')
     except FileNotFoundError:
         file = open('01 results/'+filename,'w+')
-
+    ##note: from here on 'client_ip' is replaced by 'client' for better readability
     with open(os.getcwd()+'/01 results/'+filename,'w',encoding='utf-8',errors='ignore') as file:
         for client in unique_client_ip_set:
             file.write('\n\n## '+client+' \'s dump ##\n')
@@ -197,7 +190,7 @@ def print_results(unique_client_ip_set,client_ip_record):
             next_line = False
             to_write = []
             for record in client_ip_record[client][1:]:
-                if aq.detect_rfi(record[0]):
+                if aq.detect_fi(record[0]):
                     next_line = True
                     to_write.append(str((record[1].strftime('%Y-%m-%d %H:%M:%S')+' '+record[0].strip(' - '))))
             if next_line:
@@ -231,8 +224,8 @@ def print_results(unique_client_ip_set,client_ip_record):
                     file.write(record+'\n')
                 file.write('\n')
 
-#006 combined_sqli_rfi_shells (for high-level overview of suspicious activity)
-    filename = '006 combined_sqli_rfi_shells.txt'
+#006 combined_sqli_fi_shells (for high-level overview of suspicious activity)
+    filename = '006 combined_sqli_fi_shells.txt'
     print('6/6 writing/evaluating ' + filename + ' ...')
     try:
         file = open('01 results/'+filename,'r')
@@ -247,7 +240,7 @@ def print_results(unique_client_ip_set,client_ip_record):
             next_line = False
             to_write = []
             for record in client_ip_record[client][1:]:
-                if aq.detect_sqli(record[0]) or aq.detect_rfi(record[0]) or aq.detect_web_shell(record[0]):
+                if aq.detect_sqli(record[0]) or aq.detect_fi(record[0]) or aq.detect_web_shell(record[0]):
                     next_line = True
                     to_write.append(str(record[1].strftime('%Y-%m-%d %H:%M:%S')+' '+record[0].strip(' - ')))
             if next_line:
@@ -269,24 +262,3 @@ if __name__ == '__main__':
         print_results(unique_client_ip_set,client_ip_record)
     else:
         define_variables()
-            
-##try:
-##    file = open('result/[1] IP Address List.txt','w')
-##except FileNotFoundError:
-##    file = open('result/[1] IP Address List.txt','w+')
-
-##def find_attacks(filename,keys):
-##    readfile = open (filename, "r", encoding="utf-8", errors="ignore")
-##    current_line = readfile.readline()
-##
-##    counter = 0
-##    while current_line != '':
-##        if keys[0] in current_line:
-##            print (current_line)
-##            counter+=1
-##        current_line = readfile.readline()
-##    print (counter)
-
-#find_attacks("CTF1.log",["SELECT","database"])
-
-

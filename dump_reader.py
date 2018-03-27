@@ -4,7 +4,6 @@ import csv
 
 def try_dump(): ##returns boolean
     if not os.path.isdir('01 results'):
-##        print ('can\'t find ma results')
         return False
     else:
         try:
@@ -23,7 +22,7 @@ def read_dump(): ##returns 2-element tuple. [0] is address, [1] is activity reco
     header = ''
 
     counter = 1
-    while curr_line != '': ## and counter < 10:
+    while curr_line != '': 
         counter += 1
         header_pattern = ('##\s\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\s\'s\sdump\s##')
         result = ''
@@ -35,7 +34,6 @@ def read_dump(): ##returns 2-element tuple. [0] is address, [1] is activity reco
             
         if header != '' and curr_line != '\n':
             if not re.search(header_pattern,curr_line):
-                ##tupled = curr_line
                 client_ip_record[header].append(eval(curr_line))
                 
         curr_line = file.readline()
@@ -57,7 +55,7 @@ def dump_csv():
             
     with open(filename,'w',newline='',encoding='latin-1') as csvfile:
         csvwriter = csv.writer(csvfile)
-        csvwriter.writerow(['ip address','activity','year','month','day','hour','minute','second','port','user-agent','http status code'])
+        csvwriter.writerow(['ip address','web activity','year','month','day','hour','minute','second','port','user-agent','http status code'])
         for key in to_dump:
             for line in to_dump[key]:
                 csvrow = []
@@ -66,13 +64,5 @@ def dump_csv():
                         csvrow = csvrow + [i.year] + [i.month] + [i.day] + [i.hour] + [i.minute] + [i.second]
                     else:
                         csvrow.append(i)
-##                print([key]+csvrow)
                 csvwriter.writerow([key]+csvrow)
     print('csv done.')
-                
-
-###########
-##dump_csv()
-##read_dump()
-##try_dump()
-###########
