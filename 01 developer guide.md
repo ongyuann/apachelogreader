@@ -60,14 +60,15 @@ main.py has 5 functions:
 5. **print_results(unique_client_ip_set,client_ip_record)**
     - Creates output folder /01 results in the same directory.
     - Creates the following output files while evaluating web activities by calling in analyze_query.py:
-      1. 000 dump.txt by dumping the set of unique ip addresses (unique_client_ip_set) and dict of web activities per unique client (client_ip_record) into a text file.
-      2. 001 ip_address_list.txt by dumping the set of unique ip addresses only
-      3. 002 ip_address_activities.txt by dumping the dict of web activities per unique client
-      4. 003 sql_injections.txt by assessing each element for each key in the dict (client_ip_record), parsing the element through detect_sqli() from analyze_query.py, writes the web activity to the text file if detect_sqli() returns True.
-      5. 004 file_inclusions.txt by assessing each element for each key in the dict (client_ip_record), parsing the element through detect_fi() from analyze_query.py, writes the web activity to the text file if detect_fi() returns True.
-      6. 005 web_shells.txt by assessing each element for each key in the dict (client_ip_record), parsing the element through detect_web_shell() from analyze_query.py, writes the web activity to the text file if detect_web_shell() returns True.
-      7. 006 combined_sqli_rfi_shells.txt calls all 3 detection modules from analyze_query.py and writes all web activities that trigger detection criteria to the text file.
-      8. late addition: runs dump_reader.dump_csv() that will create a csv version of 000 dump.txt.
+      1. **000 dump.txt** by dumping the set of unique ip addresses (unique_client_ip_set) and dict of web activities per unique client (client_ip_record) into a text file.
+      2. **001 ip_address_list.txt** by dumping the set of unique ip addresses only
+      3. **002 ip_address_activities.txt** by dumping the dict of web activities per unique client
+      4. **003 sql_injections.txt** by assessing each element for each key in the dict (client_ip_record), parsing the element through detect_sqli() from analyze_query.py, writes the web activity to the text file if detect_sqli() returns True.
+      5. **004 file_inclusions.txt** by assessing each element for each key in the dict (client_ip_record), parsing the element through detect_fi() from analyze_query.py, writes the web activity to the text file if detect_fi() returns True.
+      6. **005 web_shells.txt** by assessing each element for each key in the dict (client_ip_record), parsing the element through detect_web_shell() from analyze_query.py, writes the web activity to the text file if detect_web_shell() returns True.
+      7. **006 combined_sqli_rfi_shells.txt** calls all 3 detection modules from analyze_query.py and writes all web activities that trigger detection criteria to the text file.
+     - Late addition: runs dump_reader.dump_csv() to create a csv version of 000 dump.txt.
+
 
 how it works: analyze_query.py
 ------------------------------
@@ -79,6 +80,7 @@ analyze_query.py contains 3 functions that detect for SQL injections, file inclu
    - File inclusion regex masks adapted from https://www.trustwave.com/Resources/SpiderLabs-Blog/ModSecurity-Advanced-Topic-of-the-Week--Remote-File-Inclusion-Attack-Detection/
    - Web shell regex masks adapted from https://github.com/emposha/PHP-Shell-Detector 
    - The filters used in this function are layered on top of the regex masks to reduce false positives. They were created through trial and error, so are not 100% suitable for generic usage; for effective detection it is highly advisable to look at the output, adjust the filters accordingly, and run the script again to improve results.
+
 
 how it works: dump_reader.py
 ----------------------------
