@@ -9,7 +9,7 @@ apachelogreader is a series of scripts written in Python3 that does the followin
 3. Outputs the results in several text files plus one csv file.
 ---------------- 
 There are 3 scripts in apachelogreader:
-1. **main.py** scans apache logs and writes output files. (.log file) -> (6 text files, 1 csv file)
+1. **main.py** scans apache logs and writes output files. (.log file) -> (7 text files, 1 csv file)
 2. **analyze_query.py** takes in a query and returns a Boolean to indicate if the query contains signs of SQL injections, file inclusion attempts or web-shell attacks. (http query) -> (Boolean)
 3. **dump_reader.py** only works after main.py has been run once. it looks for a dump file (000 dump.txt), reads it, and re-creates the data sequences that are used by main.py for analysis. (None) -> (2-element tuple of one set and one dictionary)
 
