@@ -15,9 +15,9 @@ Using apachelogreader
 1. Ensure you've unzipped your apache log and it stands as a .log file
 2. run main.py. 
 main.py does 3 things (in following order):
-  1. read the apache log file
-  2. run evaluation tests for SQLi/file inclusion/web-shell attacks
-  3. write suspicious entries into text files and one csv file
+  1. Read the apache log file
+  2. Run evaluation tests for SQLi/file inclusion/web-shell attacks
+  3. Write suspicious entries into text files and one csv file
 
 As a user you can view the text files for what apachelogreader has found, note down the suspicious ip addresses that are logging some really suspicious activities, then head to the csv file and study the activities of these ip addresses in greater detail.
 
