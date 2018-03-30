@@ -1,3 +1,6 @@
+## code adapted from https://github.com/ryanermita/apache-logs-analyzer
+## credit for functions define_variables(), extract_data(), and print_results()
+
 import os,re,sys
 import datetime
 import analyze_query as aq
