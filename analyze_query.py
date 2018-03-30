@@ -1,4 +1,6 @@
-##returns boolean; True if sqli/file inclusion/web shell pattern is matched. otherwise returns False.
+## returns boolean; True if sqli/file inclusion/web shell pattern is matched. otherwise returns False.
+## code adapted from https://github.com/ryanermita/apache-logs-analyzer
+
 import re
 
 ##detect sqli
