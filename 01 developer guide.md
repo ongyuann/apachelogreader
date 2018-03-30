@@ -72,8 +72,8 @@ main.py has 5 functions:
     - Creates output folder /01 results in the same directory.
     - Creates the following output files while evaluating web activities by calling in analyze_query.py:
       1. **000 dump.txt** by dumping the set of unique ip addresses (unique_client_ip_set) and dict of web activities per unique client (client_ip_record) into a text file.
-      2. **001 ip_address_list.txt** by dumping the set of unique ip addresses only
-      3. **002 ip_address_activities.txt** by dumping the dict of web activities per unique client
+      2. **001 ip_address_list.txt** by dumping all known unique ip addresses.
+      3. **002 ip_address_activities.txt** by dumping the dict of web activities per unique ip address/client.
       4. **003 sql_injections.txt** by assessing each element for each key in the dict (client_ip_record), parsing the element through detect_sqli() from analyze_query.py, writes the web activity to the text file if detect_sqli() returns True.
       5. **004 file_inclusions.txt** by assessing each element for each key in the dict (client_ip_record), parsing the element through detect_fi() from analyze_query.py, writes the web activity to the text file if detect_fi() returns True.
       6. **005 web_shells.txt** by assessing each element for each key in the dict (client_ip_record), parsing the element through detect_web_shell() from analyze_query.py, writes the web activity to the text file if detect_web_shell() returns True.
@@ -85,6 +85,7 @@ how it works: analyze_query.py
 ------------------------------
 analyze_query.py contains 3 functions that detect for SQL injections, file inclusion attacks, and web shell attempts.
 --------------
+
 **detect_sqli(query), detect_fi(query), detect_web_shell(query)** -> (True if detected, False otherwise)
    - Runs a query/web activity through a series of regex masks and filters respective to SQLi, file inclusion, web shells.
    - SQL injection regex masks adapted from https://forensics.cert.org/latk/loginspector.py
@@ -98,6 +99,7 @@ how it works: dump_reader.py
 dump_reader.py looks for a dump file (000 dump.txt) and reads the file to re-create the dictionary (client_ip_record) used by main.py to write and evaluate the apache log of interest.
 ------------
 There are 3 functions in dump_reader.py:
+
 1. **try_dump()**
     - Returns True if it finds 000 dump.txt in a 01/results folder.
     - Returns False otherwise
