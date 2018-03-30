@@ -25,7 +25,9 @@ how to use
 2. Run main.py -> this will generate text and csv output for your analysis (gathered in folder called /01 results in the same directory).
 
 If the results seem off:
+
 3. Tweak analyze_query.py to reduce false positives/noise.
+
 4. Run main.py again. (time will be roughly halved as main.py will read from 000 dump.txt which contains processed data)
 
 Suggested analysis method:
