@@ -73,7 +73,7 @@ main.py has 5 functions:
     - Creates the following output files while evaluating web activities by calling in analyze_query.py:
       1. **000 dump.txt** by dumping the set of unique ip addresses (unique_client_ip_set) and dict of web activities per unique client (client_ip_record) into a text file.
       2. **001 ip_address_list.txt** by dumping all known unique ip addresses.
-      3. **002 ip_address_activities.txt** by dumping the dict of web activities per unique ip address/client.
+      3. **002 ip_address_activities.txt** by dumping Python dictionaries of web activities per unique ip address/client.
       4. **003 sql_injections.txt** by assessing each element for each key in the dict (client_ip_record), parsing the element through detect_sqli() from analyze_query.py, writes the web activity to the text file if detect_sqli() returns True.
       5. **004 file_inclusions.txt** by assessing each element for each key in the dict (client_ip_record), parsing the element through detect_fi() from analyze_query.py, writes the web activity to the text file if detect_fi() returns True.
       6. **005 web_shells.txt** by assessing each element for each key in the dict (client_ip_record), parsing the element through detect_web_shell() from analyze_query.py, writes the web activity to the text file if detect_web_shell() returns True.
