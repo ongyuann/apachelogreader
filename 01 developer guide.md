@@ -28,6 +28,13 @@ If the results seem off:
 3. Tweak analyze_query.py to reduce false positives/noise.
 4. Run main.py again. (time will be roughly halved as main.py will read from 000 dump.txt which contains processed data)
 
+Suggested analysis method:
+1. Peruse the text files and note down the suspicious activities listed for each type of SQL injection, file inclusion, web-shell attack.
+2. Note down the suspicious IP addresses, especially those that generate large volumes of traffic.
+3. Go to the csv output and filter out the suspicious IP addresses, then:
+    - Note down the timing of the activities, e.g. no. of requests sent per second, duration of sustained activities
+    - Note down the user-agents used, e.g. certain nationalities are correlated to the type of browsers used, seriousness of attacks can also be adjudged by type of user-agent (mobile vs non-mobile browers) - although, user-agents can be spoofed.
+
 how it works: main.py
 --------------------------------------
 main.py is the main driver of apachelogreader that calls in analyze_query.py and read_dump.py to read and analyze apache logs.
