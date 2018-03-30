@@ -35,7 +35,9 @@ Suggested analysis method:
 2. Note down the suspicious IP addresses, especially those that generate large volumes of traffic.
 3. Go to the csv output and filter out the suspicious IP addresses, then:
     - Note down the timing of the activities, e.g. no. of requests sent per second, duration of sustained activities
-    - Note down the user-agents used, e.g. certain nationalities are correlated to the type of browsers used, seriousness of attacks can also be adjudged by type of user-agent (mobile vs non-mobile browers) - although, user-agents can be spoofed.
+    - Note down the user-agents used, e.g. certain nationalities are correlated to the type of browsers used, seriousness of attacks can also be adjudged by type of user-agent (mobile vs non-mobile browers) - although it must be noted that user-agents can be spoofed.
+    - Look out for suspicious mini-requests that precede unusually large volumes of traffic (e.g. requests that run at >10 queries per second). These can potentially identify the modus operandi of malicious actors.
+    - Note down, importantly, the http-status-code of requests that are identified as malicious. If they indicate a successful operation (code 200), it's best to check the file/web-shell/database mentioned in the request to see if data has been compromised.
 
 how it works: main.py
 --------------------------------------
