@@ -1,3 +1,6 @@
+## this module's purpose is to reduce runtime after tweaking analyze_query.py
+## by reading apache log data from a processed data dump (000 dump.txt)
+
 import os,re,sys
 import datetime
 import csv
